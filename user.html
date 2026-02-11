@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Event Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-bar {
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .search-input {
+            padding-left: 2.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-user-circle"></i> User Panel
+            </div>
+            <a href="#" class="nav-link active" onclick="showSection('marketplace')">
+                <i class="fas fa-shopping-bag" style="margin-right: 0.5rem;"></i> Marketplace
+            </a>
+            <a href="#" class="nav-link" onclick="showSection('cart')">
+                <i class="fas fa-shopping-cart" style="margin-right: 0.5rem;"></i> My Cart <span id="cartCount"
+                    class="badge badge-warning" style="margin-left: auto;">0</span>
+            </a>
+            <a href="#" class="nav-link" onclick="showSection('guestlist')">
+                <i class="fas fa-clipboard-list" style="margin-right: 0.5rem;"></i> Guest List
+            </a>
+            <a href="#" class="nav-link" onclick="showSection('orders')">
+                <i class="fas fa-history" style="margin-right: 0.5rem;"></i> Order Status
+            </a>
+            <a href="#" class="nav-link" onclick="logout()" style="margin-top: auto; color: var(--danger-color);">
+                <i class="fas fa-sign-out-alt" style="margin-right: 0.5rem;"></i> Logout
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div>
+                    <h2 id="pageTitle" class="text-xl font-bold">Marketplace</h2>
+                    <p class="text-secondary" id="welcomeMsg">Welcome back</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div
+                        style="width: 40px; height: 40px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Sections -->
+
+            <!-- Marketplace -->
+            <div id="section-marketplace" class="section">
+
+                <div class="flex justify-between items-center mb-6">
+                    <div class="search-bar w-full">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" class="form-input search-input"
+                            placeholder="Search for products..." onkeyup="filterProducts()">
+                    </div>
+                </div>
+
+                <div class="grid-products" id="marketplaceGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Cart -->
+            <div id="section-cart" class="section hidden">
+                <div class="flex gap-4" style="align-items: flex-start;">
+                    <div
+                        style="flex: 2; background: white; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <div style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: bold;">
+                            Cart Items</div>
+                        <div id="cartItemsContainer">
+                            <!-- Populated by JS -->
+                            <div class="p-4 text-center text-secondary">Your cart is empty.</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="flex: 1; background: white; border-radius: var(--radius-lg); border: 1px solid var(--border-color); padding: 1.5rem;">
+                        <h4 class="font-bold mb-4">Order Summary</h4>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-secondary">Subtotal</span>
+                            <span class="font-bold" id="cartSubtotal">$0.00</span>
+                        </div>
+                        <div class="flex justify-between mb-4">
+                            <span class="text-secondary">Tax (5%)</span>
+                            <span class="font-bold" id="cartTax">$0.00</span>
+                        </div>
+                        <div style="border-top: 1px solid var(--border-color); margin: 1rem 0;"></div>
+                        <div class="flex justify-between mb-6">
+                            <span class="font-bold text-lg">Total</span>
+                            <span class="font-bold text-lg text-primary" id="cartTotal">$0.00</span>
+                        </div>
+                        <button class="btn btn-primary w-full" onclick="checkout()">Checkout & Pay</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guest List -->
+            <div id="section-guestlist" class="section hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Manage Guest List</h3>
+                    <div class="flex gap-2">
+                        <input type="text" id="guestNameInput" class="form-input" placeholder="Guest Name"
+                            style="width: 200px;">
+                        <input type="text" id="guestEmailInput" class="form-input" placeholder="Guest Email"
+                            style="width: 200px;">
+                        <button class="btn btn-primary" onclick="addGuest()">Add Guest</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guestListTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Orders -->
+            <div id="section-orders" class="section hidden">
+                <h3 class="font-bold text-lg mb-4">Order History</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userOrdersTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Confirm Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content text-center">
+            <div style="font-size: 3rem; color: var(--success-color); margin-bottom: 1rem;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="font-bold text-xl mb-2">Payment Successful!</h3>
+            <p class="text-secondary mb-6">Your order has been placed successfully.</p>
+            <button class="btn btn-primary" onclick="closeModal('paymentModal'); showSection('orders');">View
+                Orders</button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

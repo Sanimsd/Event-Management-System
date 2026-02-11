@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Event Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-shield-alt"></i> Admin Panel
+            </div>
+            <a href="#" class="nav-link active" onclick="showSection('dashboard')">
+                <i class="fas fa-home" style="margin-right: 0.5rem;"></i> Dashboard
+            </a>
+            <a href="#" class="nav-link" onclick="showSection('vendors')">
+                <i class="fas fa-store" style="margin-right: 0.5rem;"></i> Vendors
+            </a>
+            <a href="#" class="nav-link" onclick="showSection('users')">
+                <i class="fas fa-users" style="margin-right: 0.5rem;"></i> Users
+            </a>
+            <a href="#" class="nav-link" onclick="logout()" style="margin-top: auto; color: var(--danger-color);">
+                <i class="fas fa-sign-out-alt" style="margin-right: 0.5rem;"></i> Logout
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div>
+                    <h2 id="pageTitle" class="text-xl font-bold">Dashboard Overview</h2>
+                    <p class="text-secondary">Welcome back, Admin</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="badge badge-success">System Active</span>
+                    <div
+                        style="width: 40px; height: 40px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Sections -->
+
+            <!-- Dashboard Overview -->
+            <div id="section-dashboard" class="section">
+                <!-- Stats Cards -->
+                <div class="grid-products" style="margin-bottom: 2rem;">
+                    <div class="product-card" style="padding: 1.5rem;">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-secondary text-sm">Total Users</p>
+                                <h3 class="text-xl font-bold" id="stat-users">0</h3>
+                            </div>
+                            <div
+                                style="background: #eff6ff; padding: 0.5rem; border-radius: 50%; color: var(--primary-color);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" style="padding: 1.5rem;">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-secondary text-sm">Total Vendors</p>
+                                <h3 class="text-xl font-bold" id="stat-vendors">0</h3>
+                            </div>
+                            <div
+                                style="background: #f0fdf4; padding: 0.5rem; border-radius: 50%; color: var(--success-color);">
+                                <i class="fas fa-store"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" style="padding: 1.5rem;">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-secondary text-sm">Total Orders</p>
+                                <h3 class="text-xl font-bold" id="stat-orders">0</h3>
+                            </div>
+                            <div style="background: #faf5ff; padding: 0.5rem; border-radius: 50%; color: #9333ea;">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="font-bold text-lg mb-4">Recent Activity</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrdersTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Vendor Management -->
+            <div id="section-vendors" class="section hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Manage Vendors</h3>
+                    <button class="btn btn-primary" onclick="openModal('addVendorModal')">
+                        <i class="fas fa-plus" style="margin-right: 0.5rem;"></i> Add Vendor
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Vendor Name</th>
+                                <th>Username</th>
+                                <th>Membership</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vendorsTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- User Management -->
+            <div id="section-users" class="section hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Manage Users</h3>
+                    <!-- <button class="btn btn-primary" onclick="openModal('addUserModal')">Add User</button> -->
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Vendor Modal -->
+    <div id="addVendorModal" class="modal">
+        <div class="modal-content">
+            <h3 class="font-bold text-lg mb-4">Add New Vendor</h3>
+            <form id="addVendorForm">
+                <div class="form-group">
+                    <label class="form-label">Vendor Name</label>
+                    <input type="text" name="name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Membership Plan</label>
+                    <select name="membership" class="form-select">
+                        <option value="Standard">Standard</option>
+                        <option value="Silver">Silver</option>
+                        <option value="Gold">Gold</option>
+                    </select>
+                </div>
+                <div class="flex justify-between" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('addVendorModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Vendor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Membership Modal -->
+    <div id="editVendorModal" class="modal">
+        <div class="modal-content">
+            <h3 class="font-bold text-lg mb-4">Update Membership</h3>
+            <form id="editVendorForm">
+                <input type="hidden" name="id">
+                <div class="form-group">
+                    <label class="form-label">Vendor Name</label>
+                    <input type="text" name="name" class="form-input" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Membership Plan</label>
+                    <select name="membership" class="form-select">
+                        <option value="Standard">Standard</option>
+                        <option value="Silver">Silver</option>
+                        <option value="Gold">Gold</option>
+                    </select>
+                </div>
+                <div class="flex justify-between" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('editVendorModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

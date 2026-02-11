@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard - Event Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-store"></i> Vendor Panel
+            </div>
+            <a href="#" class="nav-link active" onclick="showSection('products')">
+                <i class="fas fa-box" style="margin-right: 0.5rem;"></i> My Products
+            </a>
+            <a href="#" class="nav-link" onclick="showSection('orders')">
+                <i class="fas fa-receipt" style="margin-right: 0.5rem;"></i> Transitions/Orders
+            </a>
+            <a href="#" class="nav-link" onclick="logout()" style="margin-top: auto; color: var(--danger-color);">
+                <i class="fas fa-sign-out-alt" style="margin-right: 0.5rem;"></i> Logout
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div>
+                    <h2 id="pageTitle" class="text-xl font-bold">My Products</h2>
+                    <p class="text-secondary" id="welcomeMsg">Welcome back</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="badge badge-warning" id="vendorMembership">Standard Plan</span>
+                    <div
+                        style="width: 40px; height: 40px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Product Management -->
+            <div id="section-products" class="section">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Your Items</h3>
+                    <button class="btn btn-primary" onclick="openModal('addProductModal')">
+                        <i class="fas fa-plus" style="margin-right: 0.5rem;"></i> Add New Item
+                    </button>
+                </div>
+
+                <div class="grid-products" id="productsGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Transaction/Orders -->
+            <div id="section-orders" class="section hidden">
+                <h3 class="font-bold text-lg mb-4">User Purchase Requests</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Product Modal -->
+    <div id="addProductModal" class="modal">
+        <div class="modal-content">
+            <h3 class="font-bold text-lg mb-4">Add New Product</h3>
+            <form id="addProductForm">
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" name="name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Price ($)</label>
+                    <input type="number" name="price" class="form-input" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-input" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="Active">Active</option>
+                        <option value="Out of Stock">Out of Stock</option>
+                    </select>
+                </div>
+                <div class="flex justify-between" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('addProductModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="editProductModal" class="modal">
+        <div class="modal-content">
+            <h3 class="font-bold text-lg mb-4">Edit Product</h3>
+            <form id="editProductForm">
+                <input type="hidden" name="id">
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" name="name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Price ($)</label>
+                    <input type="number" name="price" class="form-input" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-input" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="Active">Active</option>
+                        <option value="Out of Stock">Out of Stock</option>
+                    </select>
+                </div>
+                <div class="flex justify-between" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('editProductModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
